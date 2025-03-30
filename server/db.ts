@@ -12,10 +12,28 @@ const __dirname = dirname(__filename);
 
 const { Pool } = pg;
 
-// Using in-memory storage, no database connection needed
-export const db = null;
+// Create a PostgreSQL connection pool
+const pool = new Pool({
+  connectionString: 'postgresql://rakpa:abc123@ec2-52-72-171-61.compute-1.amazonaws.com:5432/postgres?schema=public',
+});
 
-// No migrations needed for in-memory storage
+// Create a Drizzle ORM instance
+export const db = drizzle(pool, { schema });
+
+// Function to run migrations
 export async function runMigrations() {
-  console.log('Using in-memory storage, no migrations needed');
+  console.log('Running database migrations...');
+  
+  try {
+    // Read the migration file
+    const migrationPath = path.join(__dirname, '../migrations/0000_initial.sql');
+    const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
+    
+    // Execute the migration
+    await pool.query(migrationSQL);
+    
+    console.log('Database migrations completed successfully');
+  } catch (error) {
+    console.error('Error running migrations:', error);
+  }
 }
