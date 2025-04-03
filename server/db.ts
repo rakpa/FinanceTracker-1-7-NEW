@@ -14,7 +14,7 @@ const { Pool } = pg;
 
 // Create a PostgreSQL connection pool
 const pool = new Pool({
-  connectionString: 'postgresql://rakpa:abc123@ec2-52-72-171-61.compute-1.amazonaws.com:5432/postgres?schema=public',
+  connectionString: 'postgresql://rakpa:abc123@ec2-13-51-114-32.eu-north-1.compute.amazonaws.com:5432/postgres?schema=public',
 });
 
 // Create a Drizzle ORM instance
